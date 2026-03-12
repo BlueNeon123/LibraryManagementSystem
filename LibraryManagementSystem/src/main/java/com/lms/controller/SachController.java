@@ -12,55 +12,64 @@ import java.util.List;
 
 @WebServlet("/quan-ly-sach")
 public class SachController extends HttpServlet {
-    private SachDAO sachDao = new SachDAO();
+    
+    // ĐÂY CHÍNH LÀ DÒNG KHAI BÁO BIẾN GIÚP FIX LỖI "CANNOT BE RESOLVED"
+    private SachDAO sachDAO = new SachDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
         
+        // Nhận lệnh từ đường link
         String action = request.getParameter("action");
-        String maSach = request.getParameter("maSach");
-
+        
+        // ==========================================
+        // CHỨC NĂNG 1: XÓA SÁCH
+        // ==========================================
         if ("xoa".equals(action)) {
-            sachDao.xoaSach(maSach);
-            response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
-        } else if ("sua".equals(action)) {
-            Sach s = sachDao.laySachTheoMa(maSach);
-            request.setAttribute("sach", s);
-            request.getRequestDispatcher("/templates/admin/sua_sach.jsp").forward(request, response);
-        } else {
-            // XỬ LÝ TÌM KIẾM HOẶC HIỂN THỊ
-            String tuKhoa = request.getParameter("txtSearch");
-            List<Sach> danhSach;
-            if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
-                danhSach = sachDao.timKiemSach(tuKhoa);
-            } else {
-                danhSach = sachDao.layTatCaSach();
+            String maSach = request.getParameter("maSach");
+            if (maSach != null) {
+                sachDAO.xoaSach(maSach); // Đã sử dụng biến sachDAO chuẩn xác
+                System.out.println("LOG: Vừa xóa thành công sách mã: " + maSach);
             }
-            request.setAttribute("listSach", danhSach);
-            request.getRequestDispatcher("/templates/admin/quan_ly_sach.jsp").forward(request, response);
+            // Xóa xong thì load lại trang
+            response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
+            return; 
         }
-    }
 
+        // ==========================================
+        // CHỨC NĂNG 2: HIỂN THỊ DANH SÁCH
+        // ==========================================
+        // Đã sử dụng biến sachDAO chuẩn xác
+        List<Sach> danhSach = sachDAO.layTatCaSach();
+        
+        request.setAttribute("listSach", danhSach);
+        request.getRequestDispatcher("/templates/admin/quan_ly_sach.jsp").forward(request, response);
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        
+        // Hỗ trợ tiếng Việt khi nhập form
         request.setCharacterEncoding("UTF-8");
+        
         String action = request.getParameter("action");
         
-        Sach s = new Sach(
-            request.getParameter("maSach"),
-            request.getParameter("tenSach"),
-            request.getParameter("theLoai"),
-            request.getParameter("tacGia")
-        );
-
-        if ("update".equals(action)) {
-            sachDao.capNhatSach(s);
-        } else {
-            sachDao.themSachMoi(s);
+        // Nếu lệnh là "them" (khớp với <input type="hidden" name="action" value="them"> trên JSP)
+        if ("them".equals(action)) {
+            String maSach = request.getParameter("maSach");
+            String tenSach = request.getParameter("tenSach");
+            String theLoai = request.getParameter("theLoai");
+            String tacGia = request.getParameter("tacGia");
+            
+            // Gói thành đối tượng Sach và gọi DAO lưu vào Database
+            Sach sachMoi = new Sach(maSach, tenSach, theLoai, tacGia);
+            sachDAO.themSachMoi(sachMoi);
+            
+            System.out.println("LOG: Đã thêm thành công sách mới: " + tenSach);
+            
+            // Tải lại trang để thấy sách mới xuất hiện trên bảng
+            response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
         }
-        response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
     }
 }

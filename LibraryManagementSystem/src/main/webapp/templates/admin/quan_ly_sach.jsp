@@ -67,5 +67,44 @@
             </table>
         </div>
     </div>
-    </body>
+
+    <div class="modal fade" id="modalThemSach" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Thêm Sách Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="quan-ly-sach" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="action" value="them">
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mã sách (ISBN)</label>
+                            <input type="text" class="form-control" name="maSach" required placeholder="VD: 978-03">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên sách</label>
+                            <input type="text" class="form-control" name="tenSach" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Thể loại</label>
+                            <input type="text" class="form-control" name="theLoai" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tác giả</label>
+                            <input type="text" class="form-control" name="tacGia" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu Sách</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

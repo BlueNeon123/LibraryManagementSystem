@@ -1,5 +1,7 @@
 package com.lms.controller;
 
+import com.lms.dao.UserDAO;
+import com.lms.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -8,45 +10,38 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-// Đường dẫn URL để gọi tới Controller này
-@WebServlet("/dang-nhap") 
+@WebServlet("/dang-nhap")
 public class AuthController extends HttpServlet {
+    
+    private UserDAO userDAO = new UserDAO();
 
-    // 1. XỬ LÝ GET: Hiển thị giao diện Đăng nhập
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        // Trỏ tới file HTML/JSP của nhóm View (Lưu ý: Bạn trỏ đúng đường dẫn trong thư mục webapp nhé)
-    	request.getRequestDispatcher("/templates/login.html").forward(request, response);
+        // Đã sửa đổi: Trỏ đúng vào thư mục templates chứa file
+        request.getRequestDispatcher("/templates/login.html").forward(request, response);
     }
 
-    // 2. XỬ LÝ POST: Nhận dữ liệu khi người dùng bấm nút Submit form
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
-        // Lấy dữ liệu từ form HTML (Phố/Quang phải đặt thẻ <input name="email">)
         String email = request.getParameter("email");
         String matKhau = request.getParameter("password");
 
-        // --- BƯỚC 1: GỌI DATABASE ĐỂ KIỂM TRA ---
-        // Đoạn này giả lập khi nhóm Model chưa làm xong Database:
-        boolean dangNhapThanhCong = "admin@truong.edu.vn".equals(email) && "123456".equals(matKhau);
+        User user = userDAO.kiemTraDangNhap(email, matKhau);
 
-        // --- BƯỚC 2: XỬ LÝ KẾT QUẢ ---
-        if (dangNhapThanhCong) {
-            // Lưu Session
+        if (user != null) {
+            System.out.println("LOG: Đăng nhập thành công với tên " + user.getFullName());
             HttpSession session = request.getSession();
-            session.setAttribute("userEmail", email);
-            session.setAttribute("role", "ADMIN");
-
-            // Chuyển hướng sang trang Dashboard
-            response.sendRedirect(request.getContextPath() + "/templates/admin/dashboard.html");
+            session.setAttribute("user", user);
+            
+            // Đã sửa đổi: Trỏ đúng vào file JSP trong thư mục admin
+            response.sendRedirect(request.getContextPath() + "/templates/admin/dashboard.jsp");
         } else {
-            // Sai pass -> Báo lỗi và quay lại trang đăng nhập
-            request.setAttribute("loi", "Sai email hoặc mật khẩu!");
-            request.getRequestDispatcher("/templates/admin/login.html").forward(request, response);
+            System.out.println("LOG: Đăng nhập thất bại. Sai tài khoản!");
+            // Đã sửa đổi: Trỏ đúng đường dẫn khi bị lỗi
+            response.sendRedirect(request.getContextPath() + "/templates/login.html?error=1");
         }
     }
 }

@@ -22,4 +22,9 @@ public class DatabaseConnection {
         }
         return conn;
     }
+
+    // THÊM HÀM MAIN NÀY ĐỂ CHẠY TEST TRỰC TIẾP
+    public static void main(String[] args) {
+        getConnection();
+    }
 }
