@@ -1,44 +1,33 @@
 package com.lms.model;
 
-import java.util.List;
-
 public class Sach {
-    private String maSach; // Khóa chính (ISBN)
+    private String maSach;
     private String tenSach;
-    private TheLoai theLoai; // Khóa ngoại (Mối quan hệ 1-n)
-    private List<TacGia> danhSachTacGia; // Khóa ngoại (Mối quan hệ n-n)
-    private String anhBia;
-    private String moTa;
+    private String theLoai;
+    private String tacGia;
 
-    // 1. Hàm khởi tạo không đối số (Default Constructor)
-    public Sach() {}
+    // 1. CONSTRUCTOR MẶC ĐỊNH (Luôn nên có)
+    public Sach() {
+    }
 
-    // 2. Hàm khởi tạo đầy đủ đối số
-    public Sach(String maSach, String tenSach, TheLoai theLoai, List<TacGia> danhSachTacGia, String anhBia, String moTa) {
+    // 2. CONSTRUCTOR NHẬN 4 THAM SỐ (Chính là cái mà SachDAO đang gọi)
+    public Sach(String maSach, String tenSach, String theLoai, String tacGia) {
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.theLoai = theLoai;
-        this.danhSachTacGia = danhSachTacGia;
-        this.anhBia = anhBia;
-        this.moTa = moTa;
+        this.tacGia = tacGia;
     }
 
-    // 3. Các Getter và Setter (Bắt buộc phải có để các lớp khác truy cập)
+    // --- CÁC HÀM GETTER / SETTER ĐỂ LẤY VÀ SỬA DỮ LIỆU ---
     public String getMaSach() { return maSach; }
     public void setMaSach(String maSach) { this.maSach = maSach; }
 
     public String getTenSach() { return tenSach; }
     public void setTenSach(String tenSach) { this.tenSach = tenSach; }
 
-    public TheLoai getTheLoai() { return theLoai; }
-    public void setTheLoai(TheLoai theLoai) { this.theLoai = theLoai; }
+    public String getTheLoai() { return theLoai; }
+    public void setTheLoai(String theLoai) { this.theLoai = theLoai; }
 
-    public List<TacGia> getDanhSachTacGia() { return danhSachTacGia; }
-    public void setDanhSachTacGia(List<TacGia> danhSachTacGia) { this.danhSachTacGia = danhSachTacGia; }
-
-    public String getAnhBia() { return anhBia; }
-    public void setAnhBia(String anhBia) { this.anhBia = anhBia; }
-
-    public String getMoTa() { return moTa; }
-    public void setMoTa(String moTa) { this.moTa = moTa; }
+    public String getTacGia() { return tacGia; }
+    public void setTacGia(String tacGia) { this.tacGia = tacGia; }
 }
