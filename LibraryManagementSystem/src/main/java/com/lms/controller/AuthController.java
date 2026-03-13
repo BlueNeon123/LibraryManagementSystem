@@ -18,8 +18,8 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Đã sửa đổi: Trỏ đúng vào thư mục templates chứa file
-        request.getRequestDispatcher("/templates/login.html").forward(request, response);
+        // Mở file JSP đã nâng cấp thay vì file HTML cũ
+        request.getRequestDispatcher("/templates/login.jsp").forward(request, response);
     }
 
     @Override
@@ -32,16 +32,18 @@ public class AuthController extends HttpServlet {
         User user = userDAO.kiemTraDangNhap(email, matKhau);
 
         if (user != null) {
-            System.out.println("LOG: Đăng nhập thành công với tên " + user.getFullName());
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            System.out.println("LOG: Đăng nhập thành công: " + user.getFullName());
             
-            // Đã sửa đổi: Trỏ đúng vào file JSP trong thư mục admin
-            response.sendRedirect(request.getContextPath() + "/templates/admin/dashboard.jsp");
+            HttpSession session = request.getSession();
+            // CỰC KỲ QUAN TRỌNG: Phải đặt tên là "userLogin" để ChiTietController nhận ra
+            session.setAttribute("userLogin", user);
+            
+            // Đăng nhập xong đá về Trang chủ để test mượn sách
+            response.sendRedirect(request.getContextPath() + "/trang-chu");
         } else {
-            System.out.println("LOG: Đăng nhập thất bại. Sai tài khoản!");
-            // Đã sửa đổi: Trỏ đúng đường dẫn khi bị lỗi
-            response.sendRedirect(request.getContextPath() + "/templates/login.html?error=1");
+            System.out.println("LOG: Đăng nhập thất bại!");
+            // Quay lại trang login và báo lỗi
+            response.sendRedirect(request.getContextPath() + "/dang-nhap?error=1");
         }
     }
 }

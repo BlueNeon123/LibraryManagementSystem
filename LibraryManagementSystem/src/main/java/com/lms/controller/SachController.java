@@ -29,19 +29,40 @@ public class SachController extends HttpServlet {
         if ("xoa".equals(action)) {
             String maSach = request.getParameter("maSach");
             if (maSach != null) {
-                sachDAO.xoaSach(maSach); // Đã sử dụng biến sachDAO chuẩn xác
-                System.out.println("LOG: Vừa xóa thành công sách mã: " + maSach);
+                sachDAO.xoaSach(maSach);
             }
-            // Xóa xong thì load lại trang
             response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
             return; 
         }
 
         // ==========================================
-        // CHỨC NĂNG 2: HIỂN THỊ DANH SÁCH
+        // CHỨC NĂNG 2: MỞ FORM SỬA
         // ==========================================
-        // Đã sử dụng biến sachDAO chuẩn xác
-        List<Sach> danhSach = sachDAO.layTatCaSach();
+        if ("sua".equals(action)) {
+            String maSach = request.getParameter("maSach");
+            // Lưu ý: Dùng đúng tên hàm trong SachDAO của bạn là laySachTheoMa
+            Sach sachCanSua = sachDAO.laySachTheoMa(maSach); 
+            request.setAttribute("sach", sachCanSua);
+            request.getRequestDispatcher("/templates/admin/sua_sach.jsp").forward(request, response);
+            return; 
+        }
+
+        // ==========================================
+        // CHỨC NĂNG 3: HIỂN THỊ DANH SÁCH & TÌM KIẾM (MỚI FIX Ở ĐÂY)
+        // ==========================================
+        String tuKhoa = request.getParameter("txtSearch"); // Lấy chữ từ ô tìm kiếm
+        List<Sach> danhSach;
+
+        // Nếu có gõ chữ vào ô tìm kiếm (tuKhoa không null và không rỗng)
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            danhSach = sachDAO.timKiemSach(tuKhoa); // Gọi hàm tìm kiếm
+            System.out.println("LOG: Đang lọc sách theo từ khóa: " + tuKhoa);
+            request.setAttribute("tuKhoaVuaTim", tuKhoa); // Gửi ngược lại để hiện trên ô tìm kiếm
+        } 
+        // Nếu không gõ gì thì hiện tất cả
+        else {
+            danhSach = sachDAO.layTatCaSach();
+        }
         
         request.setAttribute("listSach", danhSach);
         request.getRequestDispatcher("/templates/admin/quan_ly_sach.jsp").forward(request, response);
@@ -55,21 +76,38 @@ public class SachController extends HttpServlet {
         
         String action = request.getParameter("action");
         
-        // Nếu lệnh là "them" (khớp với <input type="hidden" name="action" value="them"> trên JSP)
+        // ==========================================
+        // CHỨC NĂNG 4: THÊM SÁCH MỚI
+        // ==========================================
         if ("them".equals(action)) {
             String maSach = request.getParameter("maSach");
             String tenSach = request.getParameter("tenSach");
             String theLoai = request.getParameter("theLoai");
             String tacGia = request.getParameter("tacGia");
             
-            // Gói thành đối tượng Sach và gọi DAO lưu vào Database
             Sach sachMoi = new Sach(maSach, tenSach, theLoai, tacGia);
             sachDAO.themSachMoi(sachMoi);
-            
             System.out.println("LOG: Đã thêm thành công sách mới: " + tenSach);
             
-            // Tải lại trang để thấy sách mới xuất hiện trên bảng
             response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
+            return;
+        }
+
+        // ==========================================
+        // CHỨC NĂNG 5: LƯU CẬP NHẬT SÁCH (MỚI THÊM)
+        // ==========================================
+        if ("capnhat".equals(action)) {
+            String maSach = request.getParameter("maSach"); // Mã sách bị ẩn readonly trên form
+            String tenSach = request.getParameter("tenSach");
+            String theLoai = request.getParameter("theLoai");
+            String tacGia = request.getParameter("tacGia");
+            
+            Sach sachSua = new Sach(maSach, tenSach, theLoai, tacGia);
+            sachDAO.capNhatSach(sachSua); // Gọi DAO để update Database
+            System.out.println("LOG: Đã cập nhật thành công sách mã: " + maSach);
+            
+            response.sendRedirect(request.getContextPath() + "/quan-ly-sach");
+            return;
         }
     }
 }

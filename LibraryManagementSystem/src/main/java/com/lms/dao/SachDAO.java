@@ -115,4 +115,24 @@ public class SachDAO {
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }
+    
+ // 8. Hàm lấy thông tin 1 cuốn sách dựa vào mã
+    public Sach getSachById(String maSach) {
+        String sql = "SELECT * FROM sach WHERE ma_sach = ?"; // Nhớ đổi tên cột cho đúng với Database của bạn
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maSach);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Sửa lại các tham số này cho khớp với Constructor Sach() của bạn nhé
+                return new Sach(
+                    rs.getString("ma_sach"),
+                    rs.getString("ten_sach"),
+                    rs.getString("the_loai"),
+                    rs.getString("tac_gia")
+                );
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return null;
+    }
 }

@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         body { background-color: #f8f9fa; overflow-x: hidden; }
-        .sidebar { min-height: 100vh; background-color: #2c3e50; width: 250px; position: fixed; top: 0; left: 0; z-index: 1000; }
+        .sidebar { min-height: 100vh; background-color: #2c3e50; width: 250px; position: fixed; top: 0; left: 0; }
         .sidebar h4 { color: white; padding: 20px 0; margin: 0; text-align: center; border-bottom: 1px solid #34495e; }
         .sidebar a { color: #ecf0f1; text-decoration: none; padding: 15px 20px; display: block; transition: 0.3s; }
         .sidebar a:hover, .sidebar a.active { background-color: #1abc9c; border-left: 5px solid #16a085; }
@@ -21,11 +22,12 @@
     <div class="sidebar text-white shadow">
         <h4><i class="bi bi-shield-lock"></i> THỦ THƯ</h4>
         <nav class="mt-3">
-            <a href="dashboard.html"><i class="bi bi-house-door me-2"></i> Dashboard</a>
-            <a href="quan-ly-sach.html"><i class="bi bi-book me-2"></i> Quản lý Sách</a>
-            <a href="nhap-kho.html" class="active"><i class="bi bi-box-seam me-2"></i> Nhập Kho</a>
-            <a href="cap-phieu-muon.html"><i class="bi bi-arrow-right-circle me-2"></i> Cấp Phiếu Mượn</a>
-            <a href="nhan-tra-sach.html"><i class="bi bi-arrow-return-left me-2"></i> Nhận Trả & Phạt</a>
+            <a href="${pageContext.request.contextPath}/dashboard"><i class="bi bi-house-door me-2"></i> Dashboard</a>
+            <a href="${pageContext.request.contextPath}/quan-ly-sach"><i class="bi bi-book me-2"></i> Quản lý Sách</a>
+            <a href="${pageContext.request.contextPath}/quan-ly-nguoi-dung"><i class="bi bi-people me-2"></i> Quản lý Người dùng</a>
+            <a href="${pageContext.request.contextPath}/nhap-kho" class="active"><i class="bi bi-box-seam me-2"></i> Nhập Kho</a>
+            <a href="${pageContext.request.contextPath}/quan-ly-muon-tra"><i class="bi bi-arrow-right-circle me-2"></i> Cấp Phiếu Mượn</a>
+            <a href="${pageContext.request.contextPath}/quan-ly-tra-sach"><i class="bi bi-arrow-return-left me-2"></i> Nhận Trả & Phạt</a>
         </nav>
     </div>
 
