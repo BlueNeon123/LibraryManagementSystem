@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/quan-ly-sach")
+@jakarta.servlet.annotation.MultipartConfig
+
 public class SachController extends HttpServlet {
     
     // ĐÂY CHÍNH LÀ DÒNG KHAI BÁO BIẾN GIÚP FIX LỖI "CANNOT BE RESOLVED"
@@ -85,7 +87,24 @@ public class SachController extends HttpServlet {
             String theLoai = request.getParameter("theLoai");
             String tacGia = request.getParameter("tacGia");
             
-            Sach sachMoi = new Sach(maSach, tenSach, theLoai, tacGia);
+            // XỬ LÝ LẤY FILE ẢNH
+            jakarta.servlet.http.Part filePart = request.getPart("fileHinhAnh");
+            String fileName = (filePart != null) ? filePart.getSubmittedFileName() : null;
+            String pathSave = ""; // Mặc định là chuỗi rỗng nếu không có ảnh
+            
+            if (fileName != null && !fileName.isEmpty()) {
+                // Lưu vào thư mục webapp/uploads/images/books
+                String realPath = request.getServletContext().getRealPath("/uploads/images/books");
+                if (realPath != null) {
+                    java.io.File dir = new java.io.File(realPath);
+                    if (!dir.exists()) dir.mkdirs();
+                    
+                    filePart.write(realPath + java.io.File.separator + fileName);
+                    pathSave = "uploads/images/books/" + fileName;
+                }
+            }
+            
+            Sach sachMoi = new Sach(maSach, tenSach, theLoai, tacGia, pathSave);
             sachDAO.themSachMoi(sachMoi);
             System.out.println("LOG: Đã thêm thành công sách mới: " + tenSach);
             
@@ -102,8 +121,29 @@ public class SachController extends HttpServlet {
             String theLoai = request.getParameter("theLoai");
             String tacGia = request.getParameter("tacGia");
             
-            Sach sachSua = new Sach(maSach, tenSach, theLoai, tacGia);
-            sachDAO.capNhatSach(sachSua); // Gọi DAO để update Database
+            // XỬ LÝ LẤY FILE ẢNH
+            jakarta.servlet.http.Part filePart = request.getPart("fileHinhAnh");
+            String fileName = (filePart != null) ? filePart.getSubmittedFileName() : null;
+            String pathSave = "";
+
+            if (fileName != null && !fileName.isEmpty()) {
+                String realPath = request.getServletContext().getRealPath("/uploads/images/books");
+                if (realPath != null) {
+                    java.io.File dir = new java.io.File(realPath);
+                    if (!dir.exists()) dir.mkdirs();
+                    filePart.write(realPath + java.io.File.separator + fileName);
+                    pathSave = "uploads/images/books/" + fileName;
+                }
+            } else {
+                //CHỈ KHI CẬP NHẬT: Mới đi tìm lại ảnh cũ nếu người dùng không upload ảnh mới
+                Sach cu = sachDAO.laySachTheoMa(maSach);
+                if (cu != null && cu.getHinhAnh() != null) {
+                    pathSave = cu.getHinhAnh();
+                }
+            }
+            
+            Sach sachMoi = new Sach(maSach, tenSach, theLoai, tacGia, pathSave);
+            sachDAO.capNhatSach(sachMoi); // Gọi DAO để update Database
             System.out.println("LOG: Đã cập nhật thành công sách mã: " + maSach);
             
             response.sendRedirect(request.getContextPath() + "/quan-ly-sach");

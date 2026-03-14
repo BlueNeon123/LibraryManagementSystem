@@ -25,13 +25,14 @@ public class SachDAO {
 
     // 2. Thêm sách mới
     public void themSachMoi(Sach s) {
-        String sql = "INSERT INTO sach (ma_sach, ten_sach, the_loai, tac_gia) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO sach (ma_sach, ten_sach, the_loai, tac_gia, hinh_anh) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, s.getMaSach());
             ps.setString(2, s.getTenSach());
             ps.setString(3, s.getTheLoai());
             ps.setString(4, s.getTacGia());
+            ps.setString(5, s.getHinhAnh());
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -105,13 +106,14 @@ public class SachDAO {
 
     // 7. Hàm Cập nhật (Sửa) thông tin sách
     public void capNhatSach(Sach s) {
-        String sql = "UPDATE sach SET ten_sach = ?, the_loai = ?, tac_gia = ? WHERE ma_sach = ?";
+        String sql = "UPDATE sach SET ten_sach = ?, the_loai = ?, tac_gia = ?, hinh_anh = ? WHERE ma_sach = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, s.getTenSach());
             ps.setString(2, s.getTheLoai());
             ps.setString(3, s.getTacGia());
-            ps.setString(4, s.getMaSach()); 
+            ps.setString(4, s.getHinhAnh());
+            ps.setString(5, s.getMaSach()); 
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }

@@ -11,7 +11,7 @@ public class Sach {
     public Sach() {
     }
 
-    // 2. CONSTRUCTOR NHẬN 4 THAM SỐ (Chính là cái mà SachDAO đang gọi)
+    // 2. CONSTRUCTOR NHẬN 5 THAM SỐ (Chính là cái mà SachDAO đang gọi)
     public Sach(String maSach, String tenSach, String theLoai, String tacGia, String hinhAnh) {
         this.maSach = maSach;
         this.tenSach = tenSach;

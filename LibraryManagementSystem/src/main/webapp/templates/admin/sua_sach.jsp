@@ -21,7 +21,11 @@
                             Sach s = (Sach) request.getAttribute("sach"); 
                             if(s != null) {
                         %>
-                        <form action="${pageContext.request.contextPath}/quan-ly-sach" method="POST">
+                        <form action="${pageContext.request.contextPath}/quan-ly-sach" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+					        <label class="form-label fw-bold">Hình ảnh bìa (Mới)</label>
+					        <input type="file" name="fileHinhAnh" class="form-control" accept="image/*">
+					    </div>
                             <input type="hidden" name="action" value="capnhat">
                             
                             <div class="mb-3">

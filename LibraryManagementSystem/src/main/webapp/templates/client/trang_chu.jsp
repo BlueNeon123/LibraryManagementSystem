@@ -101,9 +101,13 @@
                     %>
                     <div class="col">
                         <div class="card h-100 book-card text-center p-3">
-                            <div class="book-img-placeholder mb-3 rounded">
-                                <i class="bi bi-book fs-1"></i>
-                            </div>
+							<% if (s.getHinhAnh() != null && !s.getHinhAnh().isEmpty()) { %>
+							    <img src="${pageContext.request.contextPath}/<%= s.getHinhAnh() %>" class="img-fluid mb-3 rounded shadow-sm" style="height: 200px; width: 100%; object-fit: cover;">
+							<% } else { %>
+							    <div class="book-img-placeholder mb-3 rounded" style="height: 200px; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+							        <i class="bi bi-book fs-1"></i>
+							    </div>
+							<% } %>
                             <h6 class="card-title fw-bold text-dark mb-1 text-truncate" title="<%= s.getTenSach() %>">
                                 <%= s.getTenSach() %>
                             </h6>

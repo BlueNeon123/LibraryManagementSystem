@@ -81,7 +81,7 @@
                     <h5 class="modal-title">Thêm Sách Mới</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="quan-ly-sach" method="POST">
+                <form action="quan-ly-sach" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         <input type="hidden" name="action" value="them">
                         
@@ -102,6 +102,15 @@
                             <input type="text" class="form-control" name="tacGia" required>
                         </div>
                     </div>
+                    <div class="mb-3">
+                            <label class="form-label fw-bold">Tác giả</label>
+                            <input type="text" class="form-control" name="tacGia" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Hình ảnh bìa</label>
+                            <input type="file" name="fileHinhAnh" class="form-control" accept="image/*">
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                         <button type="submit" class="btn btn-success">Lưu Sách</button>
