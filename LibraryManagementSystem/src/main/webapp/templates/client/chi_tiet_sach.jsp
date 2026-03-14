@@ -58,9 +58,9 @@
         <div class="card shadow border-0">
             <div class="row g-0 p-4">
                 <div class="col-md-4 text-center">
-                    <div style="height: 400px; background-color: #e9ecef;" class="img-fluid rounded shadow d-flex align-items-center justify-content-center text-secondary">
-                        <i class="bi bi-book" style="font-size: 8rem;"></i>
-                    </div>
+                    
+                    <img src="<%= s.getHinhAnh() %>" alt="<%= s.getTenSach() %>" class="img-fluid rounded shadow" style="width: 100%; max-height: 450px; object-fit: cover; border: 1px solid #ddd;">
+                    
                 </div>
                 <div class="col-md-8 px-md-5 mt-4 mt-md-0">
                     <h2 class="fw-bold mb-3 text-primary"><%= s.getTenSach() %></h2>
@@ -70,16 +70,26 @@
                     <hr>
                     <p class="text-dark">Cuốn sách <strong><%= s.getTenSach() %></strong> của tác giả <strong><%= s.getTacGia() %></strong> là tài liệu tuyệt vời thuộc thể loại <%= s.getTheLoai() %>. Mời bạn mượn sách để trải nghiệm chi tiết.</p>
                     
-                    <div class="alert alert-info d-inline-block mt-3 shadow-sm border-0">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        <strong>Tình trạng kho:</strong> Sẵn sàng cho mượn.
-                    </div>
-
+                    <% 
+                        Integer soLuongRanh = (Integer) request.getAttribute("soLuongRanh"); 
+                        if (soLuongRanh != null && soLuongRanh > 0) { 
+                    %>
+                        <div class="alert alert-info d-inline-block mt-3 shadow-sm border-0">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            <strong>Tình trạng kho:</strong> Còn <%= soLuongRanh %> cuốn sẵn sàng cho mượn.
+                        </div>
+                    <% } else { %>
+                        <div class="alert alert-danger d-inline-block mt-3 shadow-sm border-0">
+                            <i class="bi bi-x-circle-fill me-2"></i>
+                            <strong>Tình trạng kho:</strong> Tạm thời hết sách.
+                        </div>
+                    <% } %>
                     <div class="mt-4 d-flex">
                         <form action="${pageContext.request.contextPath}/chi-tiet" method="POST">
                             <input type="hidden" name="action" value="muon_sach">
                             <input type="hidden" name="maSach" value="<%= s.getMaSach() %>">
-                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow">
+                            
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow" <%= (soLuongRanh == null || soLuongRanh == 0) ? "disabled" : "" %>>
                                 <i class="bi bi-bag-plus-fill me-2"></i>Mượn sách ngay
                             </button>
                         </form>

@@ -18,7 +18,7 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-    	String path = request.getServletPath(); // Lấy đường link người dùng bấm
+        String path = request.getServletPath(); // Lấy đường link người dùng bấm
         
         if ("/dang-nhap".equals(path)) {
             // Mở form Đăng nhập
@@ -36,29 +36,39 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-    	
-    	String path = request.getServletPath();
-    	
-    	if ("/dang-nhap".equals(path)) {
-        String email = request.getParameter("email");
-        String matKhau = request.getParameter("password");
+        
+        String path = request.getServletPath();
+        
+        if ("/dang-nhap".equals(path)) {
+            String email = request.getParameter("email");
+            String matKhau = request.getParameter("password");
 
-        User user = userDAO.kiemTraDangNhap(email, matKhau);
+            // Lúc này ông bảo vệ lôi lên được cả người bị khóa
+            User user = userDAO.kiemTraDangNhap(email, matKhau);
 
-        if (user != null) {
-            System.out.println("LOG: Đăng nhập thành công: " + user.getFullName());
-            
-            HttpSession session = request.getSession();
-            // CỰC KỲ QUAN TRỌNG: Phải đặt tên là "userLogin" để ChiTietController nhận ra
-            session.setAttribute("userLogin", user);
-            
-            // Đăng nhập xong đá về Trang chủ để test mượn sách
-            response.sendRedirect(request.getContextPath() + "/trang-chu");
-        } else {
-            System.out.println("LOG: Đăng nhập thất bại!");
-            // Quay lại trang login và báo lỗi
-            response.sendRedirect(request.getContextPath() + "/dang-nhap?error=1");
-        }
+            if (user != null) {
+                
+                // ==========================================
+                // BƯỚC KIỂM TRA DANH SÁCH ĐEN!
+                // ==========================================
+                // Lưu ý: Tùy cách bạn đặt tên trong User.java mà hàm này có thể là isTrangThai() hoặc getTrangThai()
+                if (!user.isActive()) { 
+                    System.out.println("LOG: Tài khoản " + email + " đang bị khóa!");
+                    // Đá về trang login, nhét thêm cái mã lỗi 'locked' vào link
+                    response.sendRedirect(request.getContextPath() + "/dang-nhap?error=locked");
+                    return; // Chặn đứng tại đây, không cho bưng mâm ra nữa!
+                }
+                
+                System.out.println("LOG: Đăng nhập thành công: " + user.getFullName());
+                
+                HttpSession session = request.getSession();
+                session.setAttribute("userLogin", user);
+                
+                response.sendRedirect(request.getContextPath() + "/trang-chu");
+            } else {
+                System.out.println("LOG: Đăng nhập thất bại do sai Email hoặc Pass!");
+                response.sendRedirect(request.getContextPath() + "/dang-nhap?error=1");
+            }
         }
     }
 }

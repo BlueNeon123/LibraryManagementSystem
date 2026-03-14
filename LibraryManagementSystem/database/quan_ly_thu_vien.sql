@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 14, 2026 lúc 03:23 PM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.0.30
+-- Host: 127.0.0.1
+-- Generation Time: Mar 14, 2026 at 06:03 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `quan_ly_thu_vien`
+-- Database: `quan_ly_thu_vien`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `ban_sao_sach`
+-- Table structure for table `ban_sao_sach`
 --
 
 CREATE TABLE `ban_sao_sach` (
@@ -34,7 +34,7 @@ CREATE TABLE `ban_sao_sach` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `ban_sao_sach`
+-- Dumping data for table `ban_sao_sach`
 --
 
 INSERT INTO `ban_sao_sach` (`ma_vach`, `ma_sach`, `trang_thai`) VALUES
@@ -43,7 +43,7 @@ INSERT INTO `ban_sao_sach` (`ma_vach`, `ma_sach`, `trang_thai`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `nguoi_dung`
+-- Table structure for table `nguoi_dung`
 --
 
 CREATE TABLE `nguoi_dung` (
@@ -52,22 +52,25 @@ CREATE TABLE `nguoi_dung` (
   `email` varchar(100) NOT NULL,
   `mat_khau` varchar(255) NOT NULL,
   `vai_tro` varchar(20) DEFAULT 'USER',
-  `trang_thai` tinyint(1) DEFAULT 1
+  `trang_thai` tinyint(1) DEFAULT 1,
+  `dien_thoai` varchar(15) DEFAULT NULL,
+  `lop` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `nguoi_dung`
+-- Dumping data for table `nguoi_dung`
 --
 
-INSERT INTO `nguoi_dung` (`ma_nguoi_dung`, `ho_ten`, `email`, `mat_khau`, `vai_tro`, `trang_thai`) VALUES
-('ADMIN', 'Thủ Thư', 'admin@truong.edu.vn', '123456', 'ADMIN', 1),
-('SV002', 'Columbina Hyposelenia', 'luna123@gmail.com', '123', 'USER', 1),
-('SV123456', 'Nguyên', 'nguyen@truong.edu.vn', '123', 'USER', 1);
+INSERT INTO `nguoi_dung` (`ma_nguoi_dung`, `ho_ten`, `email`, `mat_khau`, `vai_tro`, `trang_thai`, `dien_thoai`, `lop`) VALUES
+('ADMIN', 'Thủ Thư', 'admin@truong.edu.vn', '123456', 'ADMIN', 1, NULL, NULL),
+('SV002', 'Columbina Hyposelenia', 'luna123@gmail.com', '123', 'USER', 1, NULL, NULL),
+('SV1234', 'Trần Nguyên ', 'nguyentran28112005@gmail.com', '123', 'USER', 1, NULL, NULL),
+('SV123456', 'Nguyên', 'nguyen@truong.edu.vn', '123', 'USER', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `phieu_muon`
+-- Table structure for table `phieu_muon`
 --
 
 CREATE TABLE `phieu_muon` (
@@ -81,18 +84,20 @@ CREATE TABLE `phieu_muon` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `phieu_muon`
+-- Dumping data for table `phieu_muon`
 --
 
 INSERT INTO `phieu_muon` (`ma_phieu`, `ma_nguoi_dung`, `ma_ban_sao`, `ngay_muon`, `han_tra`, `ngay_tra_thuc_te`, `trang_thai`) VALUES
 (6, 'SV123456', 'BSS-001', '2026-03-12', '2026-03-26', '2026-03-12', 'Đã trả'),
 (7, 'SV123456', 'BSS-001', '2026-03-12', '2026-03-01', '2026-03-12', 'Đã trả'),
-(8, 'ADMIN', 'BSS-001', '2026-03-13', NULL, NULL, 'CHO_DUYET');
+(9, 'SV123456', 'BSS-001', '2026-03-14', '2026-03-28', '2026-03-14', 'Đã trả'),
+(10, 'ADMIN', 'BSS-001', '2026-03-14', '2026-03-28', '2026-03-14', 'Đã trả'),
+(11, 'SV123456', 'BSS-001', '2026-03-14', NULL, NULL, 'CHO_DUYET');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `sach`
+-- Table structure for table `sach`
 --
 
 CREATE TABLE `sach` (
@@ -104,59 +109,60 @@ CREATE TABLE `sach` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `sach`
+-- Dumping data for table `sach`
 --
 
 INSERT INTO `sach` (`ma_sach`, `ten_sach`, `the_loai`, `tac_gia`, `hinh_anh`) VALUES
 ('978-01', 'Clean Code', 'Công Nghệ', 'Robert C. Martin', NULL),
-('978-02', 'Nhà Giả Kim ', 'Văn Học', 'Paulo Coelho', NULL);
+('978-02', 'Nhà Giả Kim ', 'Văn Học', 'Paulo Coelho', NULL),
+('978-03', 'Conan', 'Trinh Thám', 'Aoyama Gōshō', 'uploads/images/books/images (4).jpg');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `ban_sao_sach`
+-- Indexes for table `ban_sao_sach`
 --
 ALTER TABLE `ban_sao_sach`
   ADD PRIMARY KEY (`ma_vach`),
   ADD KEY `ma_sach` (`ma_sach`);
 
 --
--- Chỉ mục cho bảng `nguoi_dung`
+-- Indexes for table `nguoi_dung`
 --
 ALTER TABLE `nguoi_dung`
   ADD PRIMARY KEY (`ma_nguoi_dung`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Chỉ mục cho bảng `phieu_muon`
+-- Indexes for table `phieu_muon`
 --
 ALTER TABLE `phieu_muon`
   ADD PRIMARY KEY (`ma_phieu`);
 
 --
--- Chỉ mục cho bảng `sach`
+-- Indexes for table `sach`
 --
 ALTER TABLE `sach`
   ADD PRIMARY KEY (`ma_sach`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `phieu_muon`
+-- AUTO_INCREMENT for table `phieu_muon`
 --
 ALTER TABLE `phieu_muon`
-  MODIFY `ma_phieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ma_phieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `ban_sao_sach`
+-- Constraints for table `ban_sao_sach`
 --
 ALTER TABLE `ban_sao_sach`
   ADD CONSTRAINT `ban_sao_sach_ibfk_1` FOREIGN KEY (`ma_sach`) REFERENCES `sach` (`ma_sach`);

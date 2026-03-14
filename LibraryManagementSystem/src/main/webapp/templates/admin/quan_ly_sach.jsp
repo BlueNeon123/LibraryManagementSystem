@@ -101,12 +101,6 @@
                             <label class="form-label fw-bold">Tác giả</label>
                             <input type="text" class="form-control" name="tacGia" required>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                            <label class="form-label fw-bold">Tác giả</label>
-                            <input type="text" class="form-control" name="tacGia" required>
-                        </div>
-                        
                         <div class="mb-3">
                             <label class="form-label fw-bold">Hình ảnh bìa</label>
                             <input type="file" name="fileHinhAnh" class="form-control" accept="image/*">

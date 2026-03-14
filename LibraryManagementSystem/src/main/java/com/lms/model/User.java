@@ -7,21 +7,25 @@ public class User {
     private String password;
     private String role;
     private boolean active; // Trạng thái thẻ: true (mở), false (khóa)
+    private String dienThoai; // MỚI THÊM
+    private String lop;       // MỚI THÊM
 
     // 1. Constructor mặc định
     public User() {}
 
-    // 2. Constructor có đủ 6 tham số (Để fix lỗi dòng 12, 13, 14 ở UserDAO)
-    public User(String userId, String fullName, String email, String password, String role, boolean active) {
+    // 2. Constructor có đủ 8 tham số (Đã cập nhật thêm điện thoại và lớp)
+    public User(String userId, String fullName, String email, String password, String role, boolean active, String dienThoai, String lop) {
         this.userId = userId;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.active = active;
+        this.dienThoai = dienThoai;
+        this.lop = lop;
     }
 
-    // --- Getter và Setter (Để fix lỗi dòng 25 ở UserDAO) ---
+    // --- Getter và Setter ---
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
@@ -37,6 +41,12 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public boolean isActive() { return active; } // Hàm kiểm tra trạng thái
-    public void setActive(boolean active) { this.active = active; } // Hàm thay đổi trạng thái
+    public boolean isActive() { return active; } 
+    public void setActive(boolean active) { this.active = active; }
+
+    public String getDienThoai() { return dienThoai; } // MỚI
+    public void setDienThoai(String dienThoai) { this.dienThoai = dienThoai; } // MỚI
+
+    public String getLop() { return lop; } // MỚI
+    public void setLop(String lop) { this.lop = lop; } // MỚI
 }

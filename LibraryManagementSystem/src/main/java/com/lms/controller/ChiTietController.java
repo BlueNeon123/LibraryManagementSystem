@@ -2,13 +2,13 @@ package com.lms.controller;
 
 import com.lms.dao.SachDAO;
 import com.lms.model.Sach;
-import com.lms.model.User; // Đã thêm import User
+import com.lms.model.User; 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession; // Đã thêm import Session
+import jakarta.servlet.http.HttpSession; 
 import java.io.IOException;
 
 @WebServlet("/chi-tiet")
@@ -28,6 +28,12 @@ public class ChiTietController extends HttpServlet {
             Sach sach = sachDAO.laySachTheoMa(maSach);
             
             if (sach != null) {
+                // =======================================================
+                // CODE MỚI THÊM: ĐẾM SỐ LƯỢNG SÁCH RẢNH VÀ GỬI RA GIAO DIỆN
+                // =======================================================
+                int soLuongRanh = sachDAO.demSoSachSanSang(maSach);
+                request.setAttribute("soLuongRanh", soLuongRanh);
+                
                 // 3. Gửi sách sang trang JSP
                 request.setAttribute("sach", sach);
                 request.getRequestDispatcher("/templates/client/chi_tiet_sach.jsp").forward(request, response);

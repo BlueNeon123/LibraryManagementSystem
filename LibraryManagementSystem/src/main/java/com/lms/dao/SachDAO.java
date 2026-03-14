@@ -88,19 +88,32 @@ public class SachDAO {
     }
 
     // 6. Tìm kiếm sách theo tên hoặc tác giả
+ // 6. Tìm kiếm sách theo tên, tác giả hoặc thể loại (Đã nâng cấp)
     public List<Sach> timKiemSach(String tuKhoa) {
         List<Sach> list = new ArrayList<>();
-        String sql = "SELECT * FROM sach WHERE ten_sach LIKE ? OR tac_gia LIKE ?";
+        // Bác sĩ đã chèn thêm cái nòng "OR the_loai LIKE ?" vào đây
+        String sql = "SELECT * FROM sach WHERE ten_sach LIKE ? OR tac_gia LIKE ? OR the_loai LIKE ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            // Nạp đạn cho cả 3 nòng
             ps.setString(1, "%" + tuKhoa + "%");
             ps.setString(2, "%" + tuKhoa + "%");
+            ps.setString(3, "%" + tuKhoa + "%"); 
+            
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Sach(rs.getString("ma_sach"), rs.getString("ten_sach"), 
-                                  rs.getString("the_loai"), rs.getString("tac_gia"), rs.getString("hinh_anh")));
+                list.add(new Sach(
+                    rs.getString("ma_sach"), 
+                    rs.getString("ten_sach"), 
+                    rs.getString("the_loai"), 
+                    rs.getString("tac_gia"), 
+                    rs.getString("hinh_anh")
+                ));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
         return list;
     }
 
@@ -137,5 +150,46 @@ public class SachDAO {
             }
         } catch (Exception e) { e.printStackTrace(); }
         return null;
+    }
+ // 9 Đếm số lượng bản sao đang rảnh trong kho
+    public int demSoSachSanSang(String maSach) {
+        String sql = "SELECT COUNT(*) FROM ban_sao_sach WHERE ma_sach = ? AND trang_thai = 'SAN_SANG'";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maSach);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
+ // 10. Lọc sách theo thể loại (Dùng LIKE để tìm tương đối, ví dụ "Công nghệ" sẽ khớp với "Công nghệ thông tin")
+    public List<Sach> laySachTheoTheLoai(String theLoai) {
+        List<Sach> list = new ArrayList<>();
+        String sql = "SELECT * FROM sach WHERE the_loai LIKE ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            // Thêm dấu % vào 2 đầu để tìm kiếm chứa từ khóa
+            ps.setString(1, "%" + theLoai + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Sach(rs.getString("ma_sach"), rs.getString("ten_sach"), 
+                                  rs.getString("the_loai"), rs.getString("tac_gia"), rs.getString("hinh_anh")));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+ // 11. Lấy danh sách các thể loại duy nhất đang có trong Database
+    public List<String> layDanhSachTheLoai() {
+        List<String> list = new ArrayList<>();
+        // Lệnh DISTINCT giúp gom các sách cùng thể loại lại thành 1 dòng duy nhất
+        String sql = "SELECT DISTINCT the_loai FROM sach WHERE the_loai IS NOT NULL AND the_loai != ''";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(rs.getString("the_loai"));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
     }
 }
