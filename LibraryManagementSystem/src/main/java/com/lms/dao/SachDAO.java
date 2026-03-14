@@ -17,7 +17,7 @@ public class SachDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(new Sach(rs.getString("ma_sach"), rs.getString("ten_sach"), 
-                                  rs.getString("the_loai"), rs.getString("tac_gia")));
+                                  rs.getString("the_loai"), rs.getString("tac_gia"), rs.getString("hinh_anh")));
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
@@ -80,7 +80,7 @@ public class SachDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Sach(rs.getString("ma_sach"), rs.getString("ten_sach"), 
-                                rs.getString("the_loai"), rs.getString("tac_gia"));
+                                rs.getString("the_loai"), rs.getString("tac_gia"), rs.getString("hinh_anh"));
             }
         } catch (Exception e) { e.printStackTrace(); }
         return null;
@@ -97,7 +97,7 @@ public class SachDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Sach(rs.getString("ma_sach"), rs.getString("ten_sach"), 
-                                  rs.getString("the_loai"), rs.getString("tac_gia")));
+                                  rs.getString("the_loai"), rs.getString("tac_gia"), rs.getString("hinh_anh")));
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
@@ -129,7 +129,8 @@ public class SachDAO {
                     rs.getString("ma_sach"),
                     rs.getString("ten_sach"),
                     rs.getString("the_loai"),
-                    rs.getString("tac_gia")
+                    rs.getString("tac_gia"),
+                    rs.getString("hinh_anh")
                 );
             }
         } catch (Exception e) { e.printStackTrace(); }

@@ -37,7 +37,7 @@
             <h5 class="m-0 fw-bold text-secondary">Hệ Thống Quản Lý Thư Viện</h5>
             <div class="d-flex align-items-center">
                 <span class="me-3 fw-bold"><i class="bi bi-person-circle"></i> Xin chào, Admin!</span>
-                <a href="login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+                <a href="${pageContext.request.contextPath}/dang-xuat" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
             </div>
         </header>
 

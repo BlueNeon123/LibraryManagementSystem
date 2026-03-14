@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.lms.model.Sach" %>
+<%@ page import="com.lms.model.User" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -34,7 +35,45 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-person-circle"></i> Tài khoản</a>
+	               	<% 
+	                    // Rút đối tượng User từ Session ra để kiểm tra
+	                    User currentUser = (User) session.getAttribute("userLogin");
+	                    
+	                    if (currentUser == null) { 
+	                %>
+	                    <li class="nav-item">
+	                        <a class="nav-link text-white" href="${pageContext.request.contextPath}/dang-nhap">
+	                            <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+	                        </a>
+	                    </li>
+	                <% } else { %>
+	                    <% 
+
+	                        if ("ADMIN".equals(currentUser.getRole())) { 
+	                    %>
+	                        <li class="nav-item me-2">
+	                            <a class="nav-link btn btn-warning text-dark fw-bold px-3 rounded-pill" href="${pageContext.request.contextPath}/dashboard">
+	                                <i class="bi bi-speedometer2"></i> Quản lý Admin
+	                            </a>
+	                        </li>
+	                    <% } %>
+	
+	                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white fw-bold" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> <%= currentUser.getFullName() %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userMenu">
+                            <% if (!"ADMIN".equals(currentUser.getRole())) { %>
+                                <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="bi bi-person-lines-fill text-primary me-2"></i>Hồ sơ của tôi</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            <% } %>
+                            
+                            <li>
+                                <a class="dropdown-item py-2 text-danger fw-bold" href="${pageContext.request.contextPath}/dang-xuat">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                </a>
+                            </li>
+	                <% } %>
                 </li>
             </ul>
         </div>

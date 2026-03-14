@@ -5,17 +5,19 @@ public class Sach {
     private String tenSach;
     private String theLoai;
     private String tacGia;
+    private String hinhAnh;
 
     // 1. CONSTRUCTOR MẶC ĐỊNH (Luôn nên có)
     public Sach() {
     }
 
     // 2. CONSTRUCTOR NHẬN 4 THAM SỐ (Chính là cái mà SachDAO đang gọi)
-    public Sach(String maSach, String tenSach, String theLoai, String tacGia) {
+    public Sach(String maSach, String tenSach, String theLoai, String tacGia, String hinhAnh) {
         this.maSach = maSach;
         this.tenSach = tenSach;
         this.theLoai = theLoai;
         this.tacGia = tacGia;
+        this.hinhAnh = hinhAnh;
     }
 
     // --- CÁC HÀM GETTER / SETTER ĐỂ LẤY VÀ SỬA DỮ LIỆU ---
@@ -30,4 +32,7 @@ public class Sach {
 
     public String getTacGia() { return tacGia; }
     public void setTacGia(String tacGia) { this.tacGia = tacGia; }
+    
+    public String getHinhAnh() { return hinhAnh; }
+    public void setHinhAnh(String hinhAnh) { this.hinhAnh = hinhAnh; }
 }

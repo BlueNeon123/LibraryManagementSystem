@@ -82,4 +82,27 @@ public class UserDAO {
             ps.executeUpdate();
         } catch (Exception e) { e.printStackTrace(); }
     }
+    
+    // 6. Hàm Đăng ký tài khoản (Thêm người dùng mới)
+    public boolean themNguoiDung(String maNguoiDung, String hoTen, String email, String matKhau) {
+        // Insert đúng vào bảng nguoi_dung. 
+        // Mặc định set vai_tro là 'USER' và trang_thai là true (được phép hoạt động)
+        String sql = "INSERT INTO nguoi_dung (ma_nguoi_dung, ho_ten, email, mat_khau, vai_tro, trang_thai) VALUES (?, ?, ?, ?, 'USER', true)";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, maNguoiDung);
+            ps.setString(2, hoTen);
+            ps.setString(3, email);
+            ps.setString(4, matKhau);
+            
+            int rowAffected = ps.executeUpdate();
+            return rowAffected > 0; // Trả về true nếu thêm thành công
+            
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        }
+        return false;
+    }
 }

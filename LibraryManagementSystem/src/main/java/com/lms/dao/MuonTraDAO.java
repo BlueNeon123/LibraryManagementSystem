@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.ArrayList;
+import java.util.List;
+import com.lms.model.PhieuMuon;
+
 import com.lms.config.DatabaseConnection;
 
 public class MuonTraDAO {
@@ -125,5 +129,43 @@ public class MuonTraDAO {
         } finally {
             try { if (conn != null) { conn.setAutoCommit(true); conn.close(); } } catch (Exception e) {}
         }
+    }
+    
+    
+    public List<PhieuMuon> layLichSuMuon(String maNguoiDung) {
+        List<PhieuMuon> danhSach = new ArrayList<>();
+        
+        // Dùng SQL JOIN 3 bảng: phieu_muon, ban_sao_sach, và sach để lấy được cái "Tên sách" ra màn hình
+        String sql = "SELECT s.ten_sach, p.ngay_muon, p.han_tra, p.trang_thai "
+                   + "FROM phieu_muon p "
+                   + "JOIN ban_sao_sach b ON p.ma_ban_sao = b.ma_vach "
+                   + "JOIN sach s ON b.ma_sach = s.ma_sach "
+                   + "WHERE p.ma_nguoi_dung = ? "
+                   + "ORDER BY p.ngay_muon DESC"; // Xếp phiếu mới nhất lên đầu
+                   
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            ps.setString(1, maNguoiDung);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                // Đóng gói dữ liệu từ Database vào đối tượng PhieuMuon
+                PhieuMuon phieu = new PhieuMuon();
+                phieu.setTenSach(rs.getString("ten_sach"));
+                phieu.setNgayMuon(rs.getDate("ngay_muon"));
+                phieu.setHanTra(rs.getDate("han_tra"));
+                phieu.setTrangThai(rs.getString("trang_thai"));
+                
+                // Tiền phạt tạm thời gán bằng 0
+                phieu.setTienPhat(0); 
+                
+                danhSach.add(phieu);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return danhSach;
     }
 }

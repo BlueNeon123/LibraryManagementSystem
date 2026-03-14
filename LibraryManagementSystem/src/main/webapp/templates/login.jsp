@@ -32,6 +32,11 @@
                 </div>
                 <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">ĐĂNG NHẬP</button>
             </form>
+            
+            <div class="text-center mt-4">
+                <span class="text-muted">Chưa có tài khoản?</span> 
+                <a href="${pageContext.request.contextPath}/dang-ky" class="text-decoration-none fw-bold">Đăng ký ngay</a>
+            </div>
 
         </div>
     </div>

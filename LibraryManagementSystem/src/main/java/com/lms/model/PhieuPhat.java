@@ -17,4 +17,35 @@ public class PhieuPhat {
     private PhieuMuon phieuMuon;
 
     // Getters và Setters...
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double getSoTienPhat() {
+		return soTienPhat;
+	}
+
+	public void setSoTienPhat(Double soTienPhat) {
+		this.soTienPhat = soTienPhat;
+	}
+
+	public String getLyDo() {
+		return lyDo;
+	}
+
+	public void setLyDo(String lyDo) {
+		this.lyDo = lyDo;
+	}
+
+	public PhieuMuon getPhieuMuon() {
+		return phieuMuon;
+	}
+
+	public void setPhieuMuon(PhieuMuon phieuMuon) {
+		this.phieuMuon = phieuMuon;
+	}
 }
