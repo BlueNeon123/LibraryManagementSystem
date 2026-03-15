@@ -54,7 +54,12 @@
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary py-2 fw-bold shadow-sm">
                                     <i class="bi bi-save2 me-2"></i>Lưu thay đổi
+                                    
                                 </button>
+                                <a href="${pageContext.request.contextPath}/lich-su-muon" class="btn btn-success py-2 fw-bold shadow-sm">
+                                    <i class="bi bi-clock-history me-2"></i>Xem lịch sử mượn sách
+                                </a>
+                                
                                 <a href="${pageContext.request.contextPath}/trang-chu" class="btn btn-outline-secondary">Quay lại trang chủ</a>
                             </div>
                         </form>

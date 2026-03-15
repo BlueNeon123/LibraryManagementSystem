@@ -19,6 +19,8 @@ public class Sach {
         this.tacGia = tacGia;
         this.hinhAnh = hinhAnh;
     }
+    
+    private int soLuongSanCo;
 
     // --- CÁC HÀM GETTER / SETTER ĐỂ LẤY VÀ SỬA DỮ LIỆU ---
     public String getMaSach() { return maSach; }
@@ -35,4 +37,7 @@ public class Sach {
     
     public String getHinhAnh() { return hinhAnh; }
     public void setHinhAnh(String hinhAnh) { this.hinhAnh = hinhAnh; }
+    
+    public int getSoLuongSanCo() { return soLuongSanCo; }
+    public void setSoLuongSanCo(int soLuongSanCo) { this.soLuongSanCo = soLuongSanCo; }
 }
